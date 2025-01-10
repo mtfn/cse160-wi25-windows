@@ -1,14 +1,8 @@
 CC = gcc 
-CFLAGS = -O2 -Wall
+CFLAGS = -O2 -Wall -Wl,--stack,268435456
 
-ifeq ($(shell uname -s),Darwin)
-    LDFLAGS = -framework OpenCL
-else
-    LDFLAGS = -L/usr/local/cuda/lib64 -lOpenCL
-endif
-
-# might not be necessary, uncomment if you need it
-# INCFLAGS = -I/usr/local/cuda/include
+LDFLAGS += -L../../OpenCL-SDK/lib -lOpenCL
+INCFLAGS += -I../../OpenCL-SDK/include
 MATHFLAG = -lm
 
 all: raytracer_parallel

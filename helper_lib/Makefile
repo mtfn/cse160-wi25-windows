@@ -2,15 +2,9 @@ CC       = gcc
 CFLAGS   = -g -Wall
 INCFLAGS :=
 
-ifeq ($(shell uname -o), Darwin)
-	LDFLAGS = -framework OpenCL
-else ifeq ($(shell uname -o), GNU/Linux) # Assumes NVIDIA GPU
-	LDFLAGS  = -L/usr/local/cuda/lib64 -lOpenCL
-	INCFLAGS += -I/usr/local/cuda/include
-else # Android
-	LDFLAGS = -lOpenCL
-endif
 LDFLAGS += -lm
+LDFLAGS += -L../OpenCL-SDK/lib -lOpenCL
+INCFLAGS += -I../OpenCL-SDK/include
 
 SOURCES := device.c kernel.c matrix.c img.c
 OBJECTS = $(SOURCES:.c=.o)
