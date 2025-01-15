@@ -3,8 +3,8 @@ CFLAGS   = -g -Wall -Wl,--stack,268435456
 INCFLAGS := -I../helper_lib
 LDFLAGS  := ../helper_lib/helper_lib.a -lm
 
-LDFLAGS += -L../../OpenCL-SDK/lib -lOpenCL
-INCFLAGS += -I../../OpenCL-SDK/include
+LDFLAGS += -L../OpenCL-SDK/lib -lOpenCL
+INCFLAGS += -I../OpenCL-SDK/include
 
 all: solution
 
