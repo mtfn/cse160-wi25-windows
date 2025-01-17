@@ -139,7 +139,7 @@ void part1(Matrix* host_input_1, Matrix* host_input_2, Matrix* host_input_3, Mat
     CheckMatrix(answer, host_output);
     SaveMatrix(output_file, host_output);
 
-    //@@ Free the GPU memory here
+    //@@ Release OpenCL objects here
 }
 
 void callVectorAdd4Kernel(Matrix* a, Matrix* b, Matrix* c, Matrix* d, Matrix* out, cl_context* context, cl_command_queue* queue) {
@@ -256,7 +256,7 @@ void part2(Matrix* host_input_1, Matrix* host_input_2, Matrix* host_input_3, Mat
     CheckMatrix(answer, host_output);
     SaveMatrix(output_file, host_output);
 
-    //@@ Free the GPU memory here
+    //@@ Release OpenCL objects here
 }
 
 int main(int argc, char *argv[])
