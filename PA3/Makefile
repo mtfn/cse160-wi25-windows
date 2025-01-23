@@ -1,17 +1,11 @@
 CC       = gcc
-CFLAGS   = -g -Wall
+CFLAGS   = -g -Wall -Wl,--stack,268435456
 INCFLAGS := -I../helper_lib
 LDFLAGS  := ../helper_lib/helper_lib.a -lm
 MAKECMD  = make
 
-ifeq ($(shell uname -o), Darwin)
-	LDFLAGS += -framework OpenCL
-else ifeq ($(shell uname -o), GNU/Linux) # Assumes NVIDIA GPU
-	LDFLAGS  += -L/usr/local/cuda/lib64 -lOpenCL
-	INCFLAGS += -I/usr/local/cuda/include
-else # Android
-	LDFLAGS += -lOpenCL
-endif
+LDFLAGS += -L../OpenCL-SDK/lib -lOpenCL
+INCFLAGS += -I../OpenCL-SDK/include
 
 all: solution
 
