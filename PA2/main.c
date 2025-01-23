@@ -93,7 +93,7 @@ void callVectorAdd2Kernel(Matrix* a, Matrix* b, Matrix* out, cl_context* context
     //@@ Copy memory to the GPU here
 
     //@@ define local and global work sizes
-    unsigned int size_a = 0; // @@ replace this with sizeof(a)
+    unsigned int size_a = 0; // @@ replace this with length of the input vector(s)
 
     // Set the arguments to the kernel
     err = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_input_1);
@@ -208,7 +208,7 @@ void callVectorAdd4Kernel(Matrix* a, Matrix* b, Matrix* c, Matrix* d, Matrix* ou
     //@@ Copy memory to the GPU here
 
     //@@ define local and global work sizes
-    unsigned int size_a = 0; // @@ replace this with sizeof(a)
+    unsigned int size_a = 0; // @@ replace this with length of the input vector(s)
 
     // Set the arguments to the kernel
     err = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_input_1);
