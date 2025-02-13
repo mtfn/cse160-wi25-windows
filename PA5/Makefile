@@ -14,6 +14,10 @@ endif
 
 all: solution
 
+debug: CFLAGS += -DOCL_DEVICE_TYPE=CL_DEVICE_TYPE_CPU
+debug: MAKECMD += debug
+debug: solution
+	
 solution: ../helper_lib/helper_lib.a main.c
 	$(CC) $(CFLAGS) -o $@ $^ $(INCFLAGS) $(LDFLAGS)
 

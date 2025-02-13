@@ -62,10 +62,18 @@ def generate_datasets(use_strides: bool = False):
             size = (sizes[0][0], sizes[0][1], 3),
             dtype = np.int32) for sizes in matrix_sizes]
 
-    kernels = [np.random.randint(low=0,
+    kernels = []
+    for sizes in matrix_sizes:
+        k_height, k_width = sizes[1]
+        tmp = np.random.randint(
+            low=0,
             high=255,
-            size = sizes[1],
-            dtype = np.int32) for sizes in matrix_sizes]
+            size=(k_height, k_width),
+            dtype=np.int32
+        )
+        tmp = (tmp + np.rot90(tmp, 2)) // 2
+        kernels.append(tmp)
+
 
     counter = 0
 
