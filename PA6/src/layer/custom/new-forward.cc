@@ -24,10 +24,10 @@ void GPUInterface::conv_forward_gpu_prolog(const float *host_y, const float *hos
     // Do not create your own device/context/queue. 
     // Use this->gpu->[program, kernel, queue, context]
     // GPU (common for entire NN)
-    //      class is defined here: https://github.com/KastnerRG/cse160-WI25/blob/ecd3a3a601fca778353bf6b3caa9a71ff3c94b79/PA6/src/layer/custom/gpu.h
+    //      class is defined here: https://github.com/KastnerRG/cse160-WI25/blob/main/PA6/src/layer/custom/gpu.h
     //      methods defined here: https://github.com/KastnerRG/cse160-WI25/blob/main/PA6%2Fsrc%2Flayer%2Fcustom%2Fgpu.cc
-    //      created and passed into the network here: https://github.com/KastnerRG/cse160-WI25/blob/ecd3a3a601fca778353bf6b3caa9a71ff3c94b79/PA6/m2.cc
-    //      it's pointer is kept in GPUInterface (THIS) class here: https://github.com/KastnerRG/cse160-WI25/blob/ecd3a3a601fca778353bf6b3caa9a71ff3c94b79/PA6/src/layer/custom/gpu-new-forward.h
+    //      created and passed into the network here: https://github.com/KastnerRG/cse160-WI25/blob/main/PA6/m2.cc
+    //      it's pointer is kept in GPUInterface (THIS) class here: https://github.com/KastnerRG/cse160-WI25/blob/main/PA6/src/layer/custom/gpu-new-forward.h
 
     //@@ Copy memory to the GPU here
     // Copy input vectors to memory buffers
