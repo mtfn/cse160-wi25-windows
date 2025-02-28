@@ -3,6 +3,25 @@
 #include <CL/cl.h>
 #include "../../opencl_utils.h"
 
+
+void conv2d(const float *in, const float *kernel, float *out, int H, int W, int K) {
+    int out_H = H - K + 1;
+    int out_W = W - K + 1;
+    for (int i = 0; i < out_H; ++i) {
+        for (int j = 0; j < out_W; ++j) {
+            float sum = 0.0f;
+            // Convolve the kernel over the image region starting at (i, j)
+            for (int m = 0; m < K; ++m) {
+                for (int n = 0; n < K; ++n) {
+                    sum += in[(i + m) * W + (j + n)] * kernel[m * K + n];
+                }
+            }
+            out[i * out_W + j] = sum;
+        }
+    }
+}
+
+
 int main(void)
 {
 
@@ -11,6 +30,7 @@ int main(void)
     int K = 3;
     int OUT_H = H-K+1;
     int OUT_W = W-K+1;
+    srand(500);
 
 
     cl_int err;
@@ -24,10 +44,10 @@ int main(void)
     float *h_output  = (float*) malloc(sizeof(float) * OUT_H * OUT_W);
     
     for (int i = 0; i < H * W; i++) {
-        h_image[i] = 1.0f; // fill image with 1's
+        h_image[i] = rand()%10;
     }
     for (int i = 0; i < K * K; i++) {
-        h_kernel[i] = 3.0f; // fill kernel with 2's
+        h_kernel[i] = rand()%10;
     }
     
     // Create device buffers
@@ -73,10 +93,19 @@ int main(void)
     printf("Output image (size %dx%d):\n", OUT_H, OUT_W);
     for (int i = 0; i < OUT_H; i++) {
         for (int j = 0; j < OUT_W; j++) {
-            printf("%6.2f ", h_output[i * OUT_W + j]);
+            printf("%6.0f ", h_output[i * OUT_W + j]);
         }
         printf("\n");
     }
+
+    // Compare with conv
+    float *h_ref = (float*) malloc(sizeof(float) * OUT_H * OUT_W);
+    conv2d(h_image, h_kernel, h_ref, H, W, K);
+    float ferr= 0;
+    for (int i = 0; i < OUT_H*OUT_W; i++) {
+        ferr += abs(h_ref[i] - h_output[i]);
+    }
+    printf("Error: %6.2f\n", ferr);
     
     // Clean up resources
     clReleaseMemObject(d_image);
