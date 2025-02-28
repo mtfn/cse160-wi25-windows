@@ -12,7 +12,7 @@ endif
 MATHFLAG = -lm
 
 all: run
-run: main.c kernel.cl
+run: main.c kernel.cl ../../opencl_utils.h
 	$(CC) $(CFLAGS) -o run main.c $(INCFLAGS) $(LDFLAGS) $(MATHFLAG)
 clean:
 	rm -f run
