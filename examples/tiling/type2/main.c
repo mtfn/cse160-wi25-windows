@@ -129,11 +129,6 @@ int main(void)
     err |= clSetKernelArg(kernel, 3, sizeof(int), &H);
     err |= clSetKernelArg(kernel, 4, sizeof(int), &W);
     err |= clSetKernelArg(kernel, 5, sizeof(int), &K);
-    
-    // Compute W_grid as the number of tiles along the output width.
-    // Here, W_OUT = 16 and TILE_WIDTH = 16 so W_grid = 1.
-    unsigned int W_grid = (W_OUT + TILE_WIDTH - 1) / TILE_WIDTH;
-    err |= clSetKernelArg(kernel, 6, sizeof(unsigned int), &W_grid);
     checkErr(err, "clSetKernelArg");
     
     // 9. Determine work-group sizes.

@@ -10,25 +10,25 @@ __kernel void conv_forward_kernel(__global float *y,
                                   __constant float *mask, 
                                   const int H, 
                                   const int W, 
-                                  const int K, 
-                                  const unsigned int W_grid) 
-{ 
+                                  const int K) 
+{
     const int H_out = H - K + 1; 
     const int W_out = W - K + 1; 
     __local float input_s[TILE_WIDTH + 2 * R][TILE_WIDTH + 2 * R]; 
  
     int tx = get_local_id(0); 
-    int ty = get_local_id(1); 
-    int m   = get_group_id(0); 
+    int ty = get_local_id(1);  
     int block_y = get_group_id(1); 
-    int b   = get_group_id(2); 
  
+    // Compute W_grid as the number of tiles along the output width.
+    const int W_grid = (W_out + TILE_WIDTH - 1) / TILE_WIDTH;
+    
     int col = (block_y % W_grid) * TILE_WIDTH + ty; 
     int row = (block_y / W_grid) * TILE_WIDTH + tx; 
  
-    #define y2d(i1,i0) y[(i1) * (W_out) + (i0)] 
-    #define x2d(i1,i0) x[(i1) * (W) + (i0)] 
-    #define MASK2d(i1,i0) mask[(i1) * (K) + (i0)] 
+    #define    y2d(i1,i0) y   [(i1) * (W_out) + (i0)] 
+    #define    x2d(i1,i0) x   [(i1) * (W)     + (i0)] 
+    #define MASK2d(i1,i0) mask[(i1) * (K)     + (i0)] 
  
     // Load the input tile (and its halo) into local memory 
     if (col < W && row < H) { 
