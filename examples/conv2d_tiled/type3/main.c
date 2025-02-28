@@ -5,10 +5,28 @@
 
 #define TILE_WIDTH 16
 
+void conv2d(const float *in, const float *kernel, float *out, int H, int W, int K) {
+    int out_H = H - K + 1;
+    int out_W = W - K + 1;
+    for (int i = 0; i < out_H; ++i) {
+        for (int j = 0; j < out_W; ++j) {
+            float sum = 0.0f;
+            // Convolve the kernel over the image region starting at (i, j)
+            for (int m = 0; m < K; ++m) {
+                for (int n = 0; n < K; ++n) {
+                    sum += in[(i + m) * W + (j + n)] * kernel[m * K + n];
+                }
+            }
+            out[i * out_W + j] = sum;
+        }
+    }
+}
+
 int main(void) {
     int H = 18, W = 18, K = 3;
     int H_out = H - K + 1;
     int W_out = W - K + 1;
+    srand(500);
     
     cl_int err;
     OpenCL ocl;
@@ -23,11 +41,11 @@ int main(void) {
     
     // Fill input image with 1's
     for (int i = 0; i < H * W; i++) {
-        h_x[i] = 1.0f;
+        h_x[i] = rand()%10;
     }
     // Fill convolution kernel (mask) with 2's (so each output should be 9*2 = 18)
     for (int i = 0; i < K * K; i++) {
-        h_mask[i] = 3.0f;
+        h_mask[i] = rand()%10;
     }
     
     // Create device buffers
@@ -81,6 +99,15 @@ int main(void) {
         }
         printf("\n");
     }
+
+    // Compare with conv
+    float *h_ref = (float*) malloc(sizeof(float) * H_out * W_out);
+    conv2d(h_x, h_mask, h_ref, H, W, K);
+    float ferr= 0;
+    for (int i = 0; i < H_out * W_out; i++) {
+        ferr += abs(h_ref[i] - h_y[i]);
+    }
+    printf("Error: %6.2f\n", ferr);
     
     // Clean up resources
     clReleaseMemObject(d_x);
@@ -90,6 +117,7 @@ int main(void) {
     free(h_x);
     free(h_mask);
     free(h_y);
+    free(h_ref);
     
     return 0;
 }
