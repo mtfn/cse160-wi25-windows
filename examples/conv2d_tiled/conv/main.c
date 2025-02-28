@@ -117,6 +117,7 @@ int main(void)
     free(h_image);
     free(h_kernel);
     free(h_output);
+    free(h_ref);
     
     return 0;
 }
