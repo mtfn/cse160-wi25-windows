@@ -11,7 +11,6 @@ static void checkErr(cl_int err, const char *name)
     }
 }
 
-
 // Function to read kernel file
 char* loadKernelSource(const char *filename, size_t *kernelSize)
 {
