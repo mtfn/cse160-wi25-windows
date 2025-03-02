@@ -11,8 +11,8 @@ endif
 # INCFLAGS = -I/usr/local/cuda/include
 MATHFLAG = -lm
 
-all: var
-var: main.c
-	$(CC) $(CFLAGS) -o var main.c $(INCFLAGS) $(LDFLAGS) $(MATHFLAG)
+all: run
+run: main.c kernel.cl ../../opencl_utils.h
+	$(CC) $(CFLAGS) -o run main.c $(INCFLAGS) $(LDFLAGS) $(MATHFLAG)
 clean:
-	rm -f var
+	rm -f run
